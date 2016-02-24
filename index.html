@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
-    <title>Searchable Map Template Demo</title>
+    <title>CPS Local School Council Voting Districts</title>
     <meta charset='utf-8' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta content='' name='description' />
@@ -23,7 +23,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class='navbar-brand' href='index.html'>Searchable Map Template</a>
+          <a class='navbar-brand' href='index.html'>CPS Local School Council Voting Districts</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -36,7 +36,7 @@
     <div class='container-fluid'>
       <div class='row'>
         <div class='col-md-4'>
-          <p>This is a demo of <a href='http://derekeder.com'>Derek Eder's</a> <a href='http://derekeder.com/searchable_map_template/'>Searchable Map Template</a> using Google <a href='http://support.google.com/fusiontables/answer/2571232?hl=en&ref_topic=1652595'>Fusion Tables</a>. Use this section to give a little context to your map.</p>
+          <p>This tool can be used to find which Citywide Chicago Public School Local School Councils you are eligable to run for and vote for.</p>
           <div class='well'>
             <h4>
               Address <small>(<a id='find_me' href='#'>find me</a>)</small>
@@ -45,10 +45,10 @@
               <input class='form-control' id='search_address' placeholder='Enter an address or an intersection' type='text' />
             </p>
             <p>
-              <label>
+              <label id='radius_section'>
                 within
                 <select id='search_radius'>
-                  <option value='400'>2 blocks</option>
+                  <option value='1' selected="selected"></option>
                   <option value='805'>1/2 mile</option>
                   <option value='1610'>1 mile</option>
                   <option value='3220'>2 miles</option>
@@ -56,26 +56,6 @@
               </label>
             </p>
 
-            <br />
-            <h4>Custom filters and views</h4>
-            <p>Take a look at the <a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples'>wiki</a> to see how to add your own custom filters and views like:</p>
-            <div class='row'>
-              <div class='col-md-6'>
-                <ul>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-checkboxes'>Checkboxes</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-radiobuttons'>Radio buttons</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-drop-down-lists'>Drop down lists</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-textsearches'>Text searches</a></li>
-                </ul>
-              </div>
-              <div class='col-md-6'>
-                <ul>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-sliders'>Sliders</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/Filter-examples#wiki-date-sliders'>Date sliders</a></li>
-                  <li><a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/List-search-results'>Results lists</a></li>
-                </ul>
-              </div>
-            </div>
             <br />
             <a class='btn btn-primary' id='search' href='#'>
               <i class='glyphicon glyphicon-search'></i>
@@ -88,7 +68,10 @@
           </div>
           <div class='alert alert-info' id='result_box' ><strong id='result_count'></strong></div>
         </div>
-        <div class='col-md-8'>
+        <div class='col-md-4'>
+          <div id='results_list'></div>
+        </div>
+        <div class='col-md-4'>
           <noscript>
             <div class='alert alert-info'>
               <h4>Your JavaScript is disabled</h4>
@@ -97,7 +80,7 @@
           </noscript>
           <div id='map_canvas'></div>
           <p class='pull-right'>
-            <a href='http://derekeder.com/searchable_map_template/'>Searchable Map Template</a> by <a href='http://derekeder.com'>Derek Eder</a>.
+            Built by Josh Kalov using the <a href='http://derekeder.com/searchable_map_template/'>Searchable Map Template</a> by <a href='http://derekeder.com'>Derek Eder</a>.
         </p>
         </div>
       </div>
@@ -119,11 +102,12 @@
         
         $(function() {
           var myMap = new MapsLib({
-            fusionTableId:      "1m4Ez9xyTGfY2CU6O-UgEcPzlS0rnzLU93e4Faa0",
-            googleApiKey:       "AIzaSyA3FQFrNr5W2OEVmuENqhb2MBB2JabdaOY",
+            fusionTableId:      "1Y0zSCzOlfYjRmQrr9IbMlmjwNIcXjCnXHE63oYpH",
+            googleApiKey:       "AIzaSyARL3r8elOBCrWovtJvQGAOfU1EIl6WZq0",
             locationColumn:     "geometry",
             map_center:         [41.8781136, -87.66677856445312],
-            locationScope:      "chicago"
+            locationScope:      "chicago",
+            searchRadius:       1
           });
 
           var autocomplete = new google.maps.places.Autocomplete(document.getElementById('search_address'));

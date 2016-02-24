@@ -6,7 +6,7 @@
 
         this.recordName = options.recordName || "result"; //for showing a count of results
         this.recordNamePlural = options.recordNamePlural || "results";
-        this.searchRadius = options.searchRadius || 805; //in meters ~ 1/2 mile
+        this.searchRadius = options.searchRadius || 1; //in meters ~ 1/2 mile
 
         // the encrypted Table ID of your Fusion Table (found under File => About)
         this.fusionTableId = options.fusionTableId || "",
@@ -99,6 +99,7 @@
         self.fusionTable = self.searchrecords;
         self.searchrecords.setMap(map);
         self.getCount(whereClause);
+        self.getList(whereClause);
     };
 
 
@@ -297,6 +298,45 @@
             $("#result_count").html(self.addCommas(numRows) + " " + name + " found");
         });
         $("#result_box").fadeIn();
+    };
+
+    MapsLib.prototype.getList = function(whereClause) {
+    var self = this;
+    var selectColumns = 'SCHOOL_NAM, SCHOOL_ID ';
+
+    self.query({ 
+      select: selectColumns, 
+      where: whereClause 
+    }, function(response) { 
+      self.displayList(response);
+    });
+  };
+
+  MapsLib.prototype.displayList = function(json) {
+    var self = this;
+
+    var data = json['rows'];
+    var template = '';
+
+    var results = $('#results_list');
+    results.hide().empty(); //hide the existing list and empty it out first
+
+    if (data == null) {
+      //clear results list
+      results.append("<li><span class='lead'>No results found</span></li>");
+    }
+    else {
+      for (var row in data) {
+        template = "\
+          <div class='row-fluid item-list'>\
+            <div class='span12'>\
+              <strong>" + data[row][0] + "</strong> " + data[row][1] + "\
+            </div>\
+          </div>";
+        results.append(template);
+      }
+    }
+    results.fadeIn();
     };
 
     MapsLib.prototype.addCommas = function (nStr) {
