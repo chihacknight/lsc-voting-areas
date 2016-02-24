@@ -94,7 +94,8 @@
                 where: whereClause
             },
             styleId: 2,
-            templateId: 2
+            templateId: 2,
+            suppressInfoWindows:true
         });
         self.fusionTable = self.searchrecords;
         self.searchrecords.setMap(map);
@@ -302,7 +303,7 @@
 
     MapsLib.prototype.getList = function(whereClause) {
     var self = this;
-    var selectColumns = 'SCHOOL_NAM, SCHOOL_ID ';
+    var selectColumns = 'schoolname, schoolid, LSC_TYPE, SchoolType, WebsiteAddress, CPS_School_Profile_Page, boundtype ';
 
     self.query({ 
       select: selectColumns, 
@@ -314,10 +315,8 @@
 
   MapsLib.prototype.displayList = function(json) {
     var self = this;
-
     var data = json['rows'];
     var template = '';
-
     var results = $('#results_list');
     results.hide().empty(); //hide the existing list and empty it out first
 
@@ -326,15 +325,33 @@
       results.append("<li><span class='lead'>No results found</span></li>");
     }
     else {
+      template = '<table class="table table-hover table-condensed table-responsive">';
+      template += '<thead><tr><th>School Name</th><th>School Type</th><th>LSC Type</th><th>Website Address</th><th>CPS Profile Page</th><th>School ID</th></tr></thead><tbody>';
       for (var row in data) {
-        template = "\
-          <div class='row-fluid item-list'>\
-            <div class='span12'>\
-              <strong>" + data[row][0] + "</strong> " + data[row][1] + "\
-            </div>\
-          </div>";
-        results.append(template);
+        template += "<tr><td>" + data[row][0] + "</td><td>" + data[row][3] + "</td>";
+        if (data[row][2] == "Appointed") {
+          template += "<td>Appointed</td>";
+        } else {
+          template += "<td>Elected</td>";
+        }
+        var link = data[row][4];
+        if (data[row][4] == "") {
+          template += "<td>Unknown</td>";
+        } else {
+          template += '<td><a href="' + data[row][4] + '">Website</a></td>';
+        }
+        if (data[row][5] == "") {
+          template += "<td>Unknown</td>";
+        } else {
+          template += '<td><a href="' + data[row][5] + '">Profile Page</a></td>';
+        }
+        template += '<td>' + data[row][1] + '</td>';
+        
+        template += "</tr>";
+        //results.append(template);
       }
+      template += '</tbody></table>';
+      results.append(template);
     }
     results.fadeIn();
     };
