@@ -169,7 +169,9 @@
 
         self.getgeoCondition(address, function (geoCondition) {
             self.whereClause += geoCondition;
-            self.submitSearch(self.whereClause, self.map);
+            if (geoCondition) {
+                self.submitSearch(self.whereClause, self.map);
+            }
         });
 
     };
