@@ -305,11 +305,12 @@
 
     MapsLib.prototype.getList = function(whereClause) {
     var self = this;
-    var selectColumns = 'school_nam, school_id, type ';
-
+    var selectColumns = 'school_nam, type, Website, CPS_School_Profile, school_id, Primary_Category ';
+    var orderByClause = ' type asc '
     self.query({ 
       select: selectColumns, 
-      where: whereClause 
+      where: whereClause,
+      orderBy: orderByClause
     }, function(response) { 
       self.displayList(response);
     });
@@ -328,28 +329,33 @@
     }
     else {
       template = '<table class="table table-hover table-condensed table-responsive">';
-      template += '<thead><tr><th>School Name</th><th>School Type</th><th>School ID</th></tr></thead><tbody>';
-      //<th>LSC Type</th><th>Website Address</th><th>CPS Profile Page</th>
+      template += '<thead><tr><th>School Name</th>'
+        + '<th>Category</th>'
+        + '<th>School Type</th>'
+        + '<th>Website</th>'
+        + '<th>CPS Profile Page</th>'
+        + '<th>School ID</th></tr></thead><tbody>';
       for (var row in data) {
-        template += "<tr><td>" + data[row][0] + "</td><td>" + data[row][2] + "</td>";
-        // if (data[row][2] == "Appointed") {
-        //   template += "<td>Appointed</td>";
-        // } else {
-        //   template += "<td>Elected</td>";
-        // }
-        //var link = data[row][4];
-        // if (data[row][4] == "") {
-        //   template += "<td>Unknown</td>";
-        // } else {
-        //   template += '<td><a href="' + data[row][4] + '">Website</a></td>';
-        // }
-        // if (data[row][5] == "") {
-        //   template += "<td>Unknown</td>";
-        // } else {
-        //   template += '<td><a href="' + data[row][5] + '">Profile Page</a></td>';
-        // }
-        template += '<td>' + data[row][1] + '</td>';
-        
+        var schoolName = data[row][0];
+        var schoolType = data[row][1];
+        var schoolWebsite = data[row][2];
+        var schoolProfile = data[row][3];
+        var schoolId = data[row][4];
+        var schoolCategory = data[row][5];
+        template += "<tr><td>" + schoolName + "</td>"
+        template += "<td>" + schoolCategory + "</td>";
+        template += "<td>" + schoolType + "</td>";
+        if (schoolWebsite == "") {
+            template += "<td>Unknown</td>";
+        } else {
+            template += '<td><a href="' + schoolWebsite + '" title="' + schoolName + ' Website opens in new window" target="_blank">Website</a></td>';
+        }
+        if (schoolProfile == "") {
+            template += "<td>Unknown</td>";
+        } else {
+            template += '<td><a href="' + schoolProfile + '" title="' + schoolName + ' Profile Page opens in new window" target="_blank">Profile Page</a></td>';
+        }
+        template += '<td>' + schoolId + '</td>';
         template += "</tr>";
         //results.append(template);
       }
