@@ -36,7 +36,7 @@
     <div class='container-fluid'>
       <div class='row'>
         <div class='col-md-4'>
-          <p>Discover which schools vote for the Local School Council (LSC) as a community member and where you can run as for a Community Representative seat on the LSC. The deadline to file LSC candidate forms at the school where you wish to run is 3:00pm March 2. The election will be held April 18 and 19. Visit the CPS <a href="http://cps.edu/Pages/LSCElections.aspx">Local School Council Elections</a> page for more information and to confirm eligibility.</p>
+          <p>Discover which schools you can vote for the Local School Council (LSC) as a community member and where you can run for a Community Representative seat on the LSC. The deadline to file LSC candidate forms at the school where you wish to run is 3:00pm March 2. The election will be held April 18 and 19. Visit the CPS <a href="http://cps.edu/Pages/LSCElections.aspx" target="_blank" title="Opens in new window">Local School Council Elections</a> page for more information and to confirm eligibility.</p>
           <div class='well'>
             <h4>
               Address <small>(<a id='find_me' href='#'>find me</a>)</small>
@@ -69,7 +69,7 @@
           <div class='alert alert-info' id='result_box' ><strong id='result_count'></strong></div>
         </div>
         <div class='col-md-5'>
-          <div id='results_list'></div>
+          <div id='results_list'>Enter an address and press search to see the list of schools.</div>
         </div>
         <div class='col-md-3'>
           <noscript>
@@ -89,7 +89,7 @@
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.address.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=places"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=places&key=AIzaSyARL3r8elOBCrWovtJvQGAOfU1EIl6WZq0"></script>
     <script type="text/javascript" src="js/maps_lib.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -120,7 +120,8 @@
             locationScope:      "chicago",
             searchRadius:       1,
             recordName:         "school",
-            recordNamePlural:   "schools"
+            recordNamePlural:   "schools",
+            defaultZoom:        12
           });
 
           var autocomplete = new google.maps.places.Autocomplete(document.getElementById('search_address'));
