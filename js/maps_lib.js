@@ -19,6 +19,9 @@
         // NOTE: if your location column name has spaces in it, surround it with single quotes
         // example: locationColumn:     "'my location'",
         this.locationColumn = options.locationColumn || "geometry";
+
+        // name of the location column in your Fusion Table for map display. This allows you to display a different geometry than used for a spacial query.
+        this.locationDisplayColumn = options.locationDisplayColumn || "geometry";
         
         // appends to all address searches if not present
         this.locationScope = options.locationScope || "";
@@ -90,7 +93,7 @@
         self.searchrecords = new google.maps.FusionTablesLayer({
             query: {
                 from: self.fusionTableId,
-                select: self.locationColumn,
+                select: self.locationDisplayColumn,
                 where: whereClause
             },
             styleId: 2,
@@ -304,65 +307,65 @@
     };
 
     MapsLib.prototype.getList = function(whereClause) {
-    var self = this;
-    var selectColumns = 'school_nam, type, Website, CPS_School_Profile, school_id, Primary_Category ';
-    var orderByClause = ' type asc '
-    self.query({ 
-      select: selectColumns, 
-      where: whereClause,
-      orderBy: orderByClause
-    }, function(response) { 
-      self.displayList(response);
-    });
-  };
+        var self = this;
+        var selectColumns = 'school_nam, type, Website, CPS_School_Profile, school_id, Primary_Category ';
+        var orderByClause = ' type asc '
+        self.query({ 
+            select: selectColumns, 
+            where: whereClause,
+            orderBy: orderByClause
+        }, function(response) { 
+            self.displayList(response);
+        });
+    };
 
-  MapsLib.prototype.displayList = function(json) {
-    var self = this;
-    var data = json['rows'];
-    var template = '';
-    var results = $('#results_list');
-    results.hide().empty(); //hide the existing list and empty it out first
+    MapsLib.prototype.displayList = function(json) {
+        var self = this;
+        var data = json['rows'];
+        var template = '';
+        var results = $('#results_list');
+        results.hide().empty(); //hide the existing list and empty it out first
 
-    if (data == null) {
-      //clear results list
-      results.append("<li><span class='lead'>No results found</span></li>");
-    }
-    else {
-      template = '<table class="table table-hover table-condensed table-responsive">';
-      template += '<thead><tr><th>School Name</th>'
-        + '<th>Category</th>'
-        + '<th>School Type</th>'
-        + '<th>Website</th>'
-        + '<th>CPS Profile Page</th>'
-        + '<th>School ID</th></tr></thead><tbody>';
-      for (var row in data) {
-        var schoolName = data[row][0];
-        var schoolType = data[row][1];
-        var schoolWebsite = data[row][2];
-        var schoolProfile = data[row][3];
-        var schoolId = data[row][4];
-        var schoolCategory = data[row][5];
-        template += "<tr><td>" + schoolName + "</td>"
-        template += "<td>" + schoolCategory + "</td>";
-        template += "<td>" + schoolType + "</td>";
-        if (schoolWebsite == "") {
-            template += "<td>Unknown</td>";
-        } else {
-            template += '<td><a href="' + schoolWebsite + '" title="' + schoolName + ' Website opens in new window" target="_blank">Website</a></td>';
+        if (data == null) {
+        //clear results list
+        results.append("<li><span class='lead'>No results found</span></li>");
         }
-        if (schoolProfile == "") {
-            template += "<td>Unknown</td>";
-        } else {
-            template += '<td><a href="' + schoolProfile + '" title="' + schoolName + ' Profile Page opens in new window" target="_blank">Profile Page</a></td>';
+        else {
+        template = '<table class="table table-hover table-condensed table-responsive">';
+        template += '<thead><tr><th>School Name</th>'
+            + '<th>Category</th>'
+            + '<th>School Type</th>'
+            + '<th>Website</th>'
+            + '<th>CPS Profile Page</th>'
+            + '<th>School ID</th></tr></thead><tbody>';
+        for (var row in data) {
+            var schoolName = data[row][0];
+            var schoolType = data[row][1];
+            var schoolWebsite = data[row][2];
+            var schoolProfile = data[row][3];
+            var schoolId = data[row][4];
+            var schoolCategory = data[row][5];
+            template += "<tr><td>" + schoolName + "</td>"
+            template += "<td>" + schoolCategory + "</td>";
+            template += "<td>" + schoolType + "</td>";
+            if (schoolWebsite == "") {
+                template += "<td>Unknown</td>";
+            } else {
+                template += '<td><a href="' + schoolWebsite + '" title="' + schoolName + ' Website opens in new window" target="_blank">Website</a></td>';
+            }
+            if (schoolProfile == "") {
+                template += "<td>Unknown</td>";
+            } else {
+                template += '<td><a href="' + schoolProfile + '" title="' + schoolName + ' Profile Page opens in new window" target="_blank">Profile Page</a></td>';
+            }
+            template += '<td>' + schoolId + '</td>';
+            template += "</tr>";
+            //results.append(template);
         }
-        template += '<td>' + schoolId + '</td>';
-        template += "</tr>";
-        //results.append(template);
-      }
-      template += '</tbody></table>';
-      results.append(template);
-    }
-    results.fadeIn();
+        template += '</tbody></table>';
+        results.append(template);
+        }
+        results.fadeIn();
     };
 
     MapsLib.prototype.addCommas = function (nStr) {
