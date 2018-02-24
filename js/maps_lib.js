@@ -140,7 +140,7 @@
                     var map = self.map;
 
                     $.address.parameter('address', encodeURIComponent(address));
-                    $.address.parameter('radius', encodeURIComponent(self.searchRadius));
+                    //$.address.parameter('radius', encodeURIComponent(self.searchRadius));
                     map.setCenter(self.currentPinpoint);
                     // set zoom level based on search radius
                     // if (self.searchRadius >= 1610000) map.setZoom(4); // 1,000 miles
